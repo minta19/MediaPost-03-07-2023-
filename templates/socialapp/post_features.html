@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock title %}
+
+{% block content %}
+    <nav class="navbar navbar-expand navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="/">Home</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Post</a>
+                </li>
+            
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>Posts by {{user}}</h2>
+
+        <div class="post-container">
+            {% for post in posts %}
+                <div class="post">
+                    <img src="{{ post.image_or_video.url }}" alt="Post Image" width="=500px" height="500px">"
+                    <h4>{{ post.caption }}</h4>
+                    <p>{{ post.Publication_date }}</p>
+                    <form action="{% url 'deletepost' post.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>  <a href="{% url 'editpost' post.id %}" class="btn btn-primary">Edit</a> <br><br>
+                    </form>
+                </div>
+            {% empty %}
+                <br><p>No posts available.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
